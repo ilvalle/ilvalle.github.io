@@ -1,0 +1,1 @@
+function onAppReady(){var e=new CustomEvent("deviceready",{});document.dispatchEvent(e)}document.addEventListener("appready",onAppReady,!1);
