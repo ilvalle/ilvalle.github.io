@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!--link href="css/pageslider.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="css/leaflet.css" >
+    <!-- script src="http://jsconsole.com/remote.js?17FED63A-7D27-4220-9A11-7B8A716E9748"></script-->
+    <link rel="stylesheet" href="css/ratchet.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/style.css">    
+    
+    <!-- script src="http://192.168.100.2:8081/target/target-script-min.js"></script-->
+    <!--script type="text/javascript" src="http://debug.build.phonegap.com/target/target-script-min.js#anonymous"></script-->
+    <script src="cordova.js"></script>
+    <!--script type="text/javascript" src="http://debug.build.phonegap.com/target/target-script-min.js#60018b80-bee9-11e3-a9d7-22000aa44e44"></script-->
+    <script data-main="js/main" src="lib/require.js"></script>
+</head>
+
+<body>
+<!-- templates -->
+<script type="text/template" id="search_template">
+  <label>Search</label>
+  <input type="text" id="search_input" />
+  <input type="button" id="search_button" value="Search" />
+</script>
+
+<script type="text/template" id="home_template">
+    <header class="bar bar-nav">
+    <a class="icon pull-right" id='update_all'></a>
+	<a class="icon second-a pull-right" id='geo'><span class="glyphicon glyphicon-map-marker"></span></a>
+    <h1 class="title">Parking Bolzano</h1>
+    </header>
+    <nav class="bar bar-tab">
+        <a class="tab-item active" href="#">
+            <span class="icon glyphicon glyphicon-home"></span>
+            <span class="tab-label">Home</span>
+        </a>
+        <a class="tab-item" href="#/map">
+            <span class="icon glyphicon glyphicon-globe"></span>
+            <span class="tab-label">Map</span>
+        </a>
+        <a class="tab-item" href="#/settings">
+            <span class="icon glyphicon glyphicon-cog"></span>
+            <span class="tab-label">Settings</span>
+        </a>
+        <!--a class="tab-item" href="#">
+            <span class="icon icon-search"></span>
+            <span class="tab-label">Search</span>
+        </a>
+        <a class="tab-item" href="#">
+            <span class="icon icon-gear"></span>
+            <span class="tab-label">Settings</span>
+        </a-->
+    </nav>
+   
+    <div class="content home"> 
+    <div id="scroller">
+	    <div  id="wrapper">
+		    <div id="loading_message" style="position:fixed;top:100px;left:50px">Index Loading...</div>
+	    </div>
+	</div>
+    </div>
+</script>
+
+
+
+<script type="text/template" id="parkingareaListItem_template">
+
+    <a href="#parkingarea/<%= id %>" class="parking">
+    	<!--span class="media-object pull-left icon icon-gear"></span-->
+    	<div class="media-body">
+	    	<div class="pull-right">
+    	    	<div class="trend"></div>
+            	<div class="realtime">xx</div>
+        	</div>
+        	<%= name %>
+        	<p><%= address %></p>
+			<p class='distance'></p>
+		</div>
+    </a>
+</script>
+
+<script type="text/template" id="parkingareaDetails_template">
+<header class="bar bar-nav">
+    <a class="icon pull-right" id='update_all'></a>
+    <a class="icon icon-left pull-left" href="#/" title="Home"></a>
+    <h1 class="title">Parking Bolzano</h1>
+</header>
+<nav class="bar bar-tab">
+  <a class="tab-item active" href="#">
+    <span class="icon glyphicon glyphicon-home"></span>
+    <span class="tab-label">Home</span>
+  </a>
+  <a class="tab-item" href="#/map">
+    <span class="icon glyphicon glyphicon-globe"></span>
+    <span class="tab-label">Map</span>
+  </a>
+  <a class="tab-item" href="#/settings">
+    <span class="icon glyphicon glyphicon-cog"></span>
+    <span class="tab-label">Settings</span>
+  </a>
+  <!--a class="tab-item" href="#">
+    <span class="icon icon-search"></span>
+    <span class="tab-label">Search</span>
+  </a>
+  <a class="tab-item" href="#">
+    <span class="icon icon-gear"></span>
+    <span class="tab-label">Settings</span>
+  </a-->
+</nav>
+<div class="content home"><div class="excard">
+<div class="content-padded">
+    <span class="realtime pull-right">xx</span>
+    <h1><%= name %> <a class='star'><span class="glyphicon "></span></a></h1>
+    <p><%= address %></p>
+    <hr/>
+    
+	<a href="tel:<%= phone %>" class="btn btn-primary"><span class='glyphicon glyphicon-earphone'></span> Chiama</a>
+	<a href="geo:<%= latitude %>,<%= longitude %>?q=<%= latitude %>,<%= longitude %>(Parcheggio <%= name %>)" class="btn btn-positive"><span class='glyphicon glyphicon-road'></span> Vai</a>
+
+	<a class="btn"><span class='glyphicon glyphicon-stats'></span> Trend</a>
+
+
+<!--div class="segmented-control">
+  <a class="control-item active" href="#item1mobile">
+    Thing one
+  </a>
+  <a class="control-item" href="#item2mobile">
+    Thing two
+  </a>
+  <a class="control-item" href="#item3mobile">
+    Thing three
+  </a>
+</div>
+<div class="excard">
+  <span id="item1mobile" class="control-content active">Item 1</span>
+  <span id="item2mobile" class="control-content">Item 2</span>
+  <span id="item3mobile" class="control-content">Item 3</span>
+</div-->
+
+    <div id="map"></div>
+    <div class="chart"></div>
+</div>
+</div></div>
+</script>
+
+<script type="text/template" id="settings_template">
+<header class="bar bar-nav">
+    <h1 class="title">Parking Bolzano</h1>
+</header>
+<nav class="bar bar-tab">
+  <a class="tab-item" href="#">
+    <span class="icon glyphicon glyphicon-home"></span>
+    <span class="tab-label">Home</span>
+  </a>
+  <a class="tab-item" href="#/map">
+    <span class="icon glyphicon glyphicon-globe"></span>
+    <span class="tab-label">Map</span>
+  </a>
+  <a class="tab-item active" href="#/settings">
+    <span class="icon glyphicon glyphicon-cog"></span>
+    <span class="tab-label">Settings</span>
+  </a>
+  <!--a class="tab-item" href="#">
+    <span class="icon icon-search"></span>
+    <span class="tab-label">Search</span>
+  </a>
+  <a class="tab-item" href="#">
+    <span class="icon icon-gear"></span>
+    <span class="tab-label">Settings</span>
+  </a-->
+</nav>
+<div class="content home"><div class="excard">
+<div class="content-padded">
+
+<ul class="table-view">
+  <li class="table-view-cell">
+    Real time data
+    <div id='realtime_update' class="toggle">
+      <div class="toggle-handle"></div>
+    </div>
+  </li>
+  <li class="table-view-cell">
+    Enable gps position at boot
+    <div id='gps_startup' class="toggle">
+      <div class="toggle-handle"></div>
+    </div>
+  </li>
+  <li class="table-view-cell">
+    p?
+    <div class="toggle">
+      <div class="toggle-handle"></div>
+    </div>
+  </li>
+</ul>
+
+</div></div></div>
+</script>
+
+<script type="text/template" id="map_template">
+<header class="bar bar-nav">
+    <a class="icon pull-right" id='update_all'></a>
+    <h1 class="title">Parking Bolzano</h1>
+</header>
+<nav class="bar bar-tab">
+  <a class="tab-item" href="#">
+    <span class="icon glyphicon glyphicon-home"></span>
+    <span class="tab-label">Home</span>
+  </a>
+  <a class="tab-item active" href="#/map">
+    <span class="icon glyphicon glyphicon-globe"></span>
+    <span class="tab-label">Map</span>
+  </a>
+  <a class="tab-item" href="#/settings">
+    <span class="icon glyphicon glyphicon-cog"></span>
+    <span class="tab-label">Settings</span>
+  </a>
+  <!--a class="tab-item" href="#">
+    <span class="icon icon-search"></span>
+    <span class="tab-label">Search</span>
+  </a>
+  <a class="tab-item" href="#">
+    <span class="icon icon-gear"></span>
+    <span class="tab-label">Settings</span>
+  </a-->
+</nav>
+<div class="content mapcontent"><div id="map"></div></div>
+</script>
+
+
+<script type="text/template" id="parkingareapopup_template">
+<div>
+    <h2><a href="#parkingarea/<%= id %>" class=""><%= name %></a></h2>
+    <!--span class="trend">xx</span-->
+    <span class="realtime">xx</span>
+	<hr/>
+	<a href="geo:<%= latitude %>,<%= longitude %>?q=<%= latitude %>,<%= longitude %>(Parcheggio <%= name %>)" class="btn btn-positive"><span class='glyphicon glyphicon-road'></span> Vai</a>
+
+</div>
+</script>
+
+<script type="text/template" id="history_template_growup">
+    <span class="badge icon icon-up badge-positive"></span>
+</script>
+<script type="text/template" id="history_template_growdown">
+    <span class="badge icon icon-down badge-negative"></span>
+</script>
+
+<script type="text/template" id="main_loading_template">
+    <div>
+        <img style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px;" src="img/spinner-large.gif"/>
+    </div>
+    <p class="text-center lead">Caricamento parcheggi</p> 
+</script>
+
+<div id="container"></div>
+</body>
+</html>
