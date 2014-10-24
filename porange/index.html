@@ -31,7 +31,8 @@
     <header class="bar bar-nav">
     <a class="icon pull-right" id='update_all'></a>
 	<a class="icon second-a pull-right" id='geo'><span class="glyphicon glyphicon-map-marker"></span></a>
-    <h1 class="title">Parking Bolzano</h1>
+	<span class='icon logo'></span>
+    <!--h1 class="title">Parking Bolzano</h1-->
     </header>
     <nav class="bar bar-tab">
         <a class="tab-item active" href="#">
@@ -42,11 +43,15 @@
             <span class="icon glyphicon glyphicon-globe"></span>
             <span class="tab-label">Map</span>
         </a>
-        <a class="tab-item" href="#/settings">
+        <a class="tab-item" href="#/info">
+            <span class="icon glyphicon glyphicon-info-sign"></span>
+            <span class="tab-label">Info</span>
+        </a>
+        <!--a class="tab-item" href="#/settings">
             <span class="icon glyphicon glyphicon-cog"></span>
             <span class="tab-label">Settings</span>
         </a>
-        <!--a class="tab-item" href="#">
+        <a class="tab-item" href="#">
             <span class="icon icon-search"></span>
             <span class="tab-label">Search</span>
         </a>
@@ -114,16 +119,20 @@
 <div class="content home"><div class="excard">
 <div class="content-padded">
     <span class="realtime pull-right">xx</span>
-    <h1><%= name %> <a class='star'><span class="glyphicon "></span></a></h1>
+    <h1><%= name %> <!--a class='star'><span class="glyphicon "></span></a--></h1>
     <p><%= address %></p>
     <hr/>
     
+    <div class="container">
+    <div class="fast-click row">
 	<a href="tel:<%= phone %>" class="btn btn-primary"><span class='glyphicon glyphicon-earphone'></span> Chiama</a>
-	<a href="geo:<%= latitude %>,<%= longitude %>?q=<%= latitude %>,<%= longitude %>(Parcheggio <%= name %>)" class="btn btn-positive"><span class='glyphicon glyphicon-road'></span> Vai</a>
+	<a href="geo:<%= latitude %>,<%= longitude %>?q=<%= latitude %>,<%= longitude %>(Parcheggio <%= name %>)" class="btn btn-positive"><span class='glyphicon glyphicon-road'></span> Vai  </a>
 
-	<a class="btn"><span class='glyphicon glyphicon-stats'></span> Trend</a>
-
-
+	<!--a class="btn"><span class='glyphicon glyphicon-stats'></span> Trend</a-->
+	<a href="#map/<%= id %>" class="btn btn-warning"><span class='glyphicon glyphicon-globe'></span> Mappa</a>
+	<span class="clearfix"></span>
+    </div>
+    </div>
 <!--div class="segmented-control">
   <a class="control-item active" href="#item1mobile">
     Thing one
@@ -142,7 +151,10 @@
 </div-->
 
     <div id="map"></div>
-    <div class="chart"></div>
+    <hr>
+    <h4>Andamento ultime ore</h4>
+    <div class="chart">
+    </div>
 </div>
 </div></div>
 </script>
@@ -200,6 +212,39 @@
 </div></div></div>
 </script>
 
+<script type="text/template" id="info_template">
+<header class="bar bar-nav">
+    <h1 class="title">Parking Bolzano</h1>
+</header>
+<nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+        <span class="icon glyphicon glyphicon-home"></span>
+        <span class="tab-label">Home</span>
+    </a>
+    <a class="tab-item" href="#/map">
+        <span class="icon glyphicon glyphicon-globe"></span>
+        <span class="tab-label">Map</span>
+    </a>
+    <a class="tab-item active" href="#/info">
+        <span class="icon glyphicon glyphicon-info-sign"></span>
+        <span class="tab-label">Info</span>
+    </a>
+</nav>
+<div class="content home"><div class="excard">
+<div class="content-padded">
+<h2>Sviluppata da ...</h2>
+<h2>Data forniti dal progetto integreen</h2>
+</div></div></div>
+</script>
+
+<script type="text/template" id="network_error_template">
+<div class="content-padded">
+    <div class="alert alert-warning center"><h2><span class="icon glyphicon glyphicon-transfer"></span> Errore di rete</h2></div>
+    <h3 >Auto reload in 5 s... <a href='#' id='reload'>Riprova adesso</a></h3>
+    <!-- aggiungere la classe che mette i puntini -->
+<div>
+</script>
+
 <script type="text/template" id="map_template">
 <header class="bar bar-nav">
     <a class="icon pull-right" id='update_all'></a>
@@ -214,11 +259,15 @@
     <span class="icon glyphicon glyphicon-globe"></span>
     <span class="tab-label">Map</span>
   </a>
-  <a class="tab-item" href="#/settings">
+    <a class="tab-item" href="#/info">
+        <span class="icon glyphicon glyphicon-info-sign"></span>
+        <span class="tab-label">Info</span>
+    </a>
+  <!--a class="tab-item" href="#/settings">
     <span class="icon glyphicon glyphicon-cog"></span>
     <span class="tab-label">Settings</span>
   </a>
-  <!--a class="tab-item" href="#">
+  <a class="tab-item" href="#">
     <span class="icon icon-search"></span>
     <span class="tab-label">Search</span>
   </a>
