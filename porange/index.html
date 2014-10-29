@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" >
     <link rel="stylesheet" href="css/style.css">    
     <link rel="stylesheet" href="css/L.Control.Locate.css">    
+        <!--link rel="stylesheet" href="css/docs.css"-->    
     <!-- script src="http://192.168.100.2:8081/target/target-script-min.js"></script-->
     <!--script type="text/javascript" src="http://debug.build.phonegap.com/target/target-script-min.js#anonymous"></script-->
     <script src="cordova.js"></script>
@@ -29,8 +30,8 @@
 
 <script type="text/template" id="home_template">
     <header class="bar bar-nav">
-    <a class="icon pull-right" id='update_all'></a>
-	<a class="icon second-a pull-right" id='geo'><span class="glyphicon glyphicon-map-marker"></span></a>
+    <a class="icon pull-right" id='update_all' href="#"></a>
+	<a class="icon second-a pull-right" id='geo' href="#"><span class="glyphicon glyphicon-map-marker"></span></a>
 	<!--div class="dropdown">
   <a data-toggle="dropdown" href="#"><span class='icon logo pull-left'>Dropdown trigger</a>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -131,7 +132,7 @@
     <p><%= address %></p>
     <hr/>
     
-    <div class="container">
+    <div class="container-mini">
     <div class="fast-click row">
 	<a href="tel:<%= phone %>" class="btn btn-primary"><span class='glyphicon glyphicon-earphone'></span> Chiama</a>
 	<a href="geo:<%= latitude %>,<%= longitude %>?q=<%= latitude %>,<%= longitude %>(Parcheggio <%= name %>)" class="btn btn-positive"><span class='glyphicon glyphicon-road'></span> Vai  </a>
@@ -248,7 +249,7 @@
 <script type="text/template" id="network_error_template">
 <div class="content-padded">
     <div class="alert alert-warning center"><h2><span class="icon glyphicon glyphicon-transfer"></span> Errore di rete</h2></div>
-    <h3 >Auto reload in 5 s... <a href='#' id='reload'>Riprova adesso</a></h3>
+    <h3 >Auto reload in <span id="countdown">10</span> s... <a href='#' id='reload'>Riprova adesso</a></h3>
     <!-- aggiungere la classe che mette i puntini -->
 <div>
 </script>
